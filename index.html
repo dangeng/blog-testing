@@ -1,12 +1,15 @@
-1The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. Deriving backpropagation is almost akin to blindly throwing chain rule at our neural network. When in doubt, chain rule!
+To use gradient descent we need to find the derivatives of the cost function with respect to each of the parameters. To do this, let’s formalize our picture of a neural network using matrices and vectors. The reason for this is that backpropagation is a lot more concise using matrix notation. 
 
-Considering the importance of chain rule in deriving backpropagation, let’s go over the multivariate chain rule.
+Let’s call the output of any neuron it’s activation, and the vector of all the activations in a layer \( \textbf a^l \) Now this vector will be a \( 1 \times N \) dimensional vector for a layer with N neurons. 
 
-Let’s consider a function \( f(a_1, a_2, \dots, a_n) \) of many variables, where $$ a_i(x_1, x_2, \dots, x_m) $$. In other words, $$ f $$ is a function of $$ a_i $$, and all the $$ {a_i}’s $$ are functions of the same set of $$ m $$ variables $$ (x_1, x_2, \dots, x_m) $$.
+PIC 1
 
-By the chain rule, the derivative of $$ f $$ with respect to $$ x_i $$ would be:
+Now let’s figure out how to write the weights in matrix notation. Of course, we could just throw all the weights into some matrix and call it a day, but let’s be a bit more clever about it. In particular, let’s take advantage of the dot product. Let’s define a \( N \times 1 \) dimensional matrix to be the weights matrix from a previous layer to **a single neuron** in the next layer, where \( N \) would be the number of neurons in the **previous** layer (all of this seemingly arbitrary notation will pay off in the end, we promise). Let’s call this matrix \( w^l_k \) for the \( k^{th} \) neuron in the \( l^{th} \) layer.
 
-\frac{\partial f}{\partial x_i} = \sum_{k=0}^n \frac{\partial f}{\partial a_k} \frac{\partial a_k}{\partial x_i}
+PIC 2
+
+Notice now that for the \( k^{th} \) neuron in the \( l^{th} \) layer, we can get the \( k^{th} \) weighted sum of its inputs, called \( z^l_k \) (where \( l \) is the layer and \( k \) is the \( k^{th} \) neuron, by simply taking the dot product between \( w^l_k \) and \( a^{l-1} \) 
+
 
 <script type="text/javascript" async
   src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
