@@ -1,3 +1,41 @@
+The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. In mathematical notation, we want:
+
+\( \frac{\partial C}{\partial w^l_{jk}}, \frac{\partial C}{\partial b^l_{j}} $$
+
+While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. By blindly throwing the chain rule at our cost function, we’ll eventually be able to stumble upon the derivatives that we want. When in doubt, chain rule!
+
+Considering the importance of chain rule in deriving backpropagation, let’s go over the multivariate chain rule.
+
+Let’s consider a function \( f(a_1, a_2, \dots, a_n) \) of many variables, where \( a_i(x_1, x_2, \dots, x_m) \) In other words, \( f \) is a function of \( a_i \) and all the \( {a_i}’s \) are functions of the same set of \( m \) variables \( (x_1, x_2, \dots, x_m) \)
+
+By the chain rule, the derivative of \( f \) with respect to \( x_i \) would be:
+
+$$ \frac{\partial f}{\partial x_i} = \sum_{k=0}^n \frac{\partial f}{\partial a_k} \frac{\partial a_k}{\partial x_i} $$
+
+In a sense, the formula says the total rate of change in a function is the sum of the rates of change with respect to each of it independent variables.
+First off, let’s talk about the cost function. Our assumption is that the cost function is some function of the outputs of the neural network and our training examples. So in general our cost function is \( C(a^L_1, a^L_2, \dots, a^L_m, y) \) where \( L \) represents the last layer which has \( m \) output neurons, and \( y \) represents our training data. For one, this should seem pretty intuitive for our cost function, after all the cost function should probably only be a function of the outputs of our algorithm (and our training examples). Also, having a cost function of this form makes it possible to use the chain rule very efficiently on our cost function.
+
+Now just one more thing before we start chain ruling away. To make our derivation a bit easier we’re going to calculate an intermediate value
+
+$$ \delta^l_j \equiv \frac{\partial C}{\partial z^l_j} $$
+
+which is the rate of change of the cost function with respect to the \( j^{th} \) neuron in the \( l^{th} \) layer.
+
+From this \( \delta^l_j \) we will be able to chain rule our way to the derivatives that we want. Namely:
+
+$$ \frac{\partial C}{\partial w^l_{jk}}, \frac{\partial C}{\partial b^l_{j}} $$
+
+Alright, enough talk. Let’s (finally) start chain ruling. By using chain rule, we find that 
+
+$$ \delta^l_j = \frac{\partial C}{\partial z^l_j} = \sum_k \frac{\partial C}{\partial a^l_k} \frac{\partial a^l_k}{\partial z^l_j} $$
+
+We can apply the multivariate chain rule because \( C \) is a function of \( (a^l_1, a^l_2, \dots, a^l_m) \), and each \( a^l_i \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \). Actually, each \( a^l_i \) is a function of just \( z^l_i \). Namely \( a^l_i = \sigma ( z^l_i ) \). Now this means \( \frac{\partial a^l_k}{\partial z^l_j} \) will be zero unless \( k=j \), in which case \( \frac{\partial a^l_k}{\partial z^l_j} \) will be \( \sigma’(z^l_j) \). Thus our expression for \( \delta^l_j \) simplifies to
+
+$$ \delta^l_j = \frac{\partial C}{\partial a^l_j} \sigma’(z^l_j) $$
+
+Now for the actual “backpropagation” part of the algorithm. We’ll use chain rule to derive an expression for \( \delta^l \) from \( \delta^{l+1} \). In words, this means we will have a way of finding deltas in one layer from the deltas in the next layer. Once we figure out how to do this, we can just start from the very end layer of a neural network and work our way backwards finding all the deltas.
+
+PIC? (of deltas propagating backwards)
 Alright, let’s chain rule this guy out. We start with
 
 $$ \delta^l_j \equiv \frac{\partial C}{\partial z^l_j} $$
@@ -7,14 +45,61 @@ and with chain rule we get
 $$ \delta^l_j = \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{{\partial z^{l+1}_k}}{\partial z^l_j} $$
 
 Again, we can apply the chain rule here because \( C \) is some function of \( (z^{l+1}_1, z^{l+1}_2, \dots, z^{l+1}_n) \). 
-
-
-
-And also \( z^{l+1}_k \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \), which basically means the activations of one layer are a function of the activations of the previous layer.
+And also \( z^{l+1}_k \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \). Essentially, what we’re saying is that the activations of one layer are a function of the activations of the previous layer.
 
 Now notice \( \frac{\partial C}{\partial z^{l+1}_k} \) is actually \( \delta^{l+1}_k \). Substituting we get
 
 $$ \delta^l_j = \sum_k \frac{{\partial z^{l+1}_k}}{\partial z^l_j} \delta^{l+1}_k $$
+
+Turns out we can simplify the \( \frac{{\partial z^{l+1}_k}}{\partial z^l_j} \) a bit more. Let’s explicitly write out \( z^{l+1}_k \):
+
+$$ z^{l+1}_k = \sum_j w^{l+1}_{kj} a^l_j + b^{l+1}_k = \sum_j w^{l+1}_{kj} \sigma(z^l_j) + b^{l+1}_k $$
+
+The derivative of this with respect to \( z^l)j \) is
+
+$$ \frac{{\partial z^{l+1}_k}}{\partial z^l_j} = w^{l+1}_{kj} \sigma’(z^l_j) $$
+
+Substituting into our expression for delta, we get
+
+$$ \delta^l_j = \sum_k w^{l+1}_{kj} \delta^{l+1}_k \sigma’(z^l_j) $$
+
+Now, finally we have expressions to find the deltas of all the layers. Now how exactly do we actually get 
+
+$$ \frac{\partial C}{\partial w^l_{jk}}, \frac{\partial C}{\partial b^l_{j}} $$
+
+from these deltas?
+
+You can probably guess by now; we’re going to chain rule them out!
+
+Let’s start with \( \frac{\partial C}{\partial b^l_{j}} \). Using our trusty chain rule, we get
+
+$$ \frac{\partial C}{\partial b^l_{j}} = \frac{\partial C}{\partial z^l_j} \frac{\partial z^l_j}{\partial b^l_j} $$
+
+By definition, \( \delta^l_j \equiv \frac{\partial C}{\partial z^l_j} \), and writing out \( z^l_j \) explicitly, we get
+
+$$ z^l_j = \sum_k w^l_{jk} a^{l-1}_k + b^l_j $$
+
+Differentiating with respect to \( b^l_j \), we simply get \( 1 \). Thus, substituting these two expressions, our equation for the bias derivative is
+
+$$ \frac{\partial C}{\partial b^l_j} = \delta^l_j $$
+
+The weight derivative is found in a similar manner. By chain ruling we get
+
+$$ \frac{\partial C}{\partial w^l_{jk}} = \frac{\partial C}{\partial z^l_j} \frac{\partial z^l_j}{\partial w^l_{jk}} $$
+
+Again, the first term is the delta of the \( l^{th} \) layer. The second term we can find be differentiating our explicit formula for \( z^l_j \)
+
+$$ z^l_j = \sum_k w^l_{jk} a^{l-1}_k + b^l_j $$
+
+Differentiating with respect to \( w^l_{jk} \), we get
+
+$$ \frac{\partial z^l_j}{\partial w^l_{jk}} = a^{l-1}_k $$
+
+Substituting we get
+
+$$ \frac{\partial C}{\partial w^l_{jk}} = a^{l-1}_k \delta^l_j $$
+
+ALRIGHT I’M GOING TO BED WILL CONCLUDE LATER!!!!
 
 
 <script type="text/javascript" async
