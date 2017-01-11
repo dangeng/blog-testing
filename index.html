@@ -8,4 +8,9 @@ By the chain rule, the derivative of $$ f $$ with respect to $$ x_i $$ would be:
 
 \frac{\partial f}{\partial x_i} = \sum_{k=0}^n \frac{\partial f}{\partial a_k} \frac{\partial a_k}{\partial x_i}
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async src="path-to-mathjax/MathJax.js?config=TeX-AMS_CHTML"></script>
