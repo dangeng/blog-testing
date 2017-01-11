@@ -1,0 +1,10 @@
+The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. Deriving backpropagation is almost akin to blindly throwing chain rule at our neural network. When in doubt, chain rule!
+
+Considering the importance of chain rule in deriving backpropagation, let’s go over the multivariate chain rule.
+
+Let’s consider a function $$ f(a_1, a_2, \dots, a_n) $$ of many variables, where $$ a_i(x_1, x_2, \dots, x_m) $$. In other words, $$ f $$ is a function of $$ a_i $$, and all the $$ {a_i}’s $$ are functions of the same set of $$ m $$ variables $$ (x_1, x_2, \dots, x_m) $$.
+
+By the chain rule, the derivative of $$ f $$ with respect to $$ x_i $$ would be:
+
+\frac{\partial f}{\partial x_i} = \sum_{k=0}^n \frac{\partial f}{\partial a_k} \frac{\partial a_k}{\partial x_i}
+
