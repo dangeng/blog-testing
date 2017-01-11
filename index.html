@@ -1,14 +1,8 @@
-To use gradient descent we need to find the derivatives of the cost function with respect to each of the parameters. To do this, let’s formalize our picture of a neural network using matrices and vectors. The reason for this is that backpropagation is a lot more concise using matrix notation. 
+Alright, enough talk. Let’s (finally) start chain ruling. By using chain rule, we find that 
 
-Let’s call the output of any neuron it’s activation, and the vector of all the activations in a layer \( \textbf a^l \) Now this vector will be a \( 1 \times N \) dimensional vector for a layer with N neurons. 
+$$ \delta^l_j = \frac{\partial C}{\partial z^l_j} = \delta^l_j = \frac{\partial C}{\partial z^l_j} = \sum_k \frac{\partial C}{\partial a^l_k} \frac{\partial a^l_k}{\partial z^l_j} $$
 
-PIC 1
-
-Now let’s figure out how to write the weights in matrix notation. Of course, we could just throw all the weights into some matrix and call it a day, but let’s be a bit more clever about it. In particular, let’s take advantage of the dot product. Let’s define a \( N \times 1 \) dimensional matrix to be the weights matrix from a previous layer to **a single neuron** in the next layer, where \( N \) would be the number of neurons in the **previous** layer (all of this seemingly arbitrary notation will pay off in the end, we promise). Let’s call this matrix \( w^l_k \) for the \( k^{th} \) neuron in the \( l^{th} \) layer.
-
-PIC 2
-
-Notice now that for the \( k^{th} \) neuron in the \( l^{th} \) layer, we can get the \( k^{th} \) weighted sum of its inputs, called \( z^l_k \) (where \( l \) is the layer and \( k \) is the \( k^{th} \) neuron, by simply taking the dot product between \( w^l_k \) and \( a^{l-1} \) 
+We can apply the multivariate chain rule because \( C \) is a function of \( (a^l_1, a^l_2, \dots, a^l_m) \), and each \( a^l_i \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \). Actually, each \( a^l_i \) is a function of just \( z^l_i \). Namely \( a^l_i = \sigma ( z^l_i ) \). 
 
 
 <script type="text/javascript" async
