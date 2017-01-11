@@ -1,6 +1,6 @@
 The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. In mathematical notation, we want:
 
-\( \frac{\partial C}{\partial w^l_{jk}}, \frac{\partial C}{\partial b^l_{j}} $$
+$$ \frac{\partial C}{\partial w^l_{jk}}, \frac{\partial C}{\partial b^l_{j}} $$
 
 While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. By blindly throwing the chain rule at our cost function, we’ll eventually be able to stumble upon the derivatives that we want. When in doubt, chain rule!
 
@@ -55,7 +55,7 @@ Turns out we can simplify the \( \frac{{\partial z^{l+1}_k}}{\partial z^l_j} \) 
 
 $$ z^{l+1}_k = \sum_j w^{l+1}_{kj} a^l_j + b^{l+1}_k = \sum_j w^{l+1}_{kj} \sigma(z^l_j) + b^{l+1}_k $$
 
-The derivative of this with respect to \( z^l)j \) is
+The derivative of this with respect to \( z^l_j \) is
 
 $$ \frac{{\partial z^{l+1}_k}}{\partial z^l_j} = w^{l+1}_{kj} \sigma’(z^l_j) $$
 
