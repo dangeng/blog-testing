@@ -1,4 +1,4 @@
-The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. Deriving backpropagation is almost akin to blindly throwing chain rule at our neural network. When in doubt, chain rule!
+1The whole point of backpropagation is to find the derivatives of the cost function with respect to all of the weights and biases in a neural network. While this may seem like a daunting task at first, it turns out that the only tool we really need is the chain rule. Deriving backpropagation is almost akin to blindly throwing chain rule at our neural network. When in doubt, chain rule!
 
 Considering the importance of chain rule in deriving backpropagation, let’s go over the multivariate chain rule.
 
@@ -8,9 +8,6 @@ By the chain rule, the derivative of $$ f $$ with respect to $$ x_i $$ would be:
 
 \frac{\partial f}{\partial x_i} = \sum_{k=0}^n \frac{\partial f}{\partial a_k} \frac{\partial a_k}{\partial x_i}
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-});
+<script type="text/javascript" async
+  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
-<script type="text/javascript" async src="path-to-mathjax/MathJax.js?config=TeX-AMS_CHTML"></script>
