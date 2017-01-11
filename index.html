@@ -1,10 +1,17 @@
-Alright, enough talk. Let’s (finally) start chain ruling. By using chain rule, we find that 
+Alright, let’s chain rule this guy out. We start with
 
-$$ \delta^l_j = \frac{\partial C}{\partial z^l_j} = \delta^l_j = \frac{\partial C}{\partial z^l_j} = \sum_k \frac{\partial C}{\partial a^l_k} \frac{\partial a^l_k}{\partial z^l_j} $$
+$$ \delta^l_j \equiv \frac{\partial C}{\partial z^l_j} $$
 
-We can apply the multivariate chain rule because \( C \) is a function of \( (a^l_1, a^l_2, \dots, a^l_m) \), and each \( a^l_i \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \). Actually, each \( a^l_i \) is a function of just \( z^l_i \). Namely \( a^l_i = \sigma ( z^l_i ) \). Now this means \( \frac{\partial a^l_k}{\partial z^l_j} \) will be zero unless \( k=j )\, in which case \( \frac{\partial a^l_k}{\partial z^l_j} \) will be \( \sigma’(z^l_j) \). Thus our expression for \( \delta^l_j \) simplifies to
+and with chain rule we get
 
-$$ \delta^l_j = \frac{\partial C}{\partial a^l_j} \sigma’(z^l_j)
+$$ \delta^l_j = \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{{\partial z^{l+1}_k}}{\partial z^l_j} $$
+
+Again, we can apply the chain rule here because \( C \) is some function of \( (z^{l+1}_1, z^{l+1}_2, \dots, z^{l+1}_n) \). 
+And also \( z^{l+1}_k \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \), which basically means the activations of one layer are a function of the activations of the previous layer.
+
+Now notice \( \frac{\partial C}{\partial z^{l+1}_k} \) is actually \( \delta^{l+1}_k \). Substituting we get
+
+$$ \delta^l_j = \sum_k \frac{{\partial z^{l+1}_k}}{\partial z^l_j} \delta^{l+1}_k $$
 
 
 <script type="text/javascript" async
