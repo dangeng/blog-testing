@@ -7,6 +7,9 @@ and with chain rule we get
 $$ \delta^l_j = \sum_k \frac{\partial C}{\partial z^{l+1}_k} \frac{{\partial z^{l+1}_k}}{\partial z^l_j} $$
 
 Again, we can apply the chain rule here because \( C \) is some function of \( (z^{l+1}_1, z^{l+1}_2, \dots, z^{l+1}_n) \). 
+
+
+
 And also \( z^{l+1}_k \) is in turn a function of \( (z^l_1, z^l_2, \dots, z^l_m) \), which basically means the activations of one layer are a function of the activations of the previous layer.
 
 Now notice \( \frac{\partial C}{\partial z^{l+1}_k} \) is actually \( \delta^{l+1}_k \). Substituting we get
